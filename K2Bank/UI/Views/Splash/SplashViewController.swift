@@ -10,15 +10,11 @@ import UIKit
 class SplashViewController: UIViewController, Coordinating {
     
     var coordinator: Coordinator?
-    
     let provider = AuthProvider()
-    
     var finishFlow: onCheck?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        ( coordinator as? StartCoordinator )?.finishFlow?(provider.isAuth)
+        self.finishFlow?(provider.isAuth)
     }
-    
 }

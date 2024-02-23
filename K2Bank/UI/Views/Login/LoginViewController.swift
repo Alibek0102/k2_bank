@@ -14,6 +14,10 @@ class LoginViewController: UIViewController, Coordinating, LoginPresenterView {
     var coordinator: Coordinator?
     var presenter: LoginPresenterProtocol?
     
+    var afterAuthentification: onCheck?
+    
+    let hud = JGProgressHUD()
+    
     let header = AuthHeaderView()
     let container = CredentialsContainerView(title: "Log in to your account", subTitle: "Sign in with Email")
     let emailTextField = AuthTextField(placeholder: "Email")
@@ -21,9 +25,6 @@ class LoginViewController: UIViewController, Coordinating, LoginPresenterView {
     let forgotPasswordLabel = ClicableLabel(text: "Forgot your password?", fontType: .bold) {
         print("okok")
     }
-    
-    let hud = JGProgressHUD()
-    
     let loginButton = CustomButton(title: "Log in")
     
     override func viewDidLoad() {
@@ -124,12 +125,9 @@ class LoginViewController: UIViewController, Coordinating, LoginPresenterView {
     
     func sendResultMessage(state: AuthentificationState) {
         switch state {
-        case .success: (self.coordinator as? LoginCoordinator)?.finishFlow?(true)
-            
+        case .success: self.afterAuthentification?(true)
         case .emailError: self.showToastMessage(text: "Неправильный email")
-            
         case .passwordError: self.showToastMessage(text: "Неправильный email или пароль")
-            
         }
     }
     
@@ -150,7 +148,7 @@ extension LoginViewController {
     }
     
     func showToastMessage(text: String) {
-        self.view.makeToast(text, duration: 3, position: .bottom)
+        self.view.makeToast(text, duration: 3, position: .top)
     }
 }
     
